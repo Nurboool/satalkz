@@ -1,0 +1,262 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}Профильді өңдеу - SatAl.KZ{% endblock %}
+
+{% block content %}
+<style>
+    /* АРТҚА БАТЫРМАСЫ */
+    .back-btn {
+        background: transparent;
+        border: 2px solid #002f34;
+        color: #002f34;
+        padding: 0.6rem 1.5rem;
+        border-radius: 4px;
+        font-weight: 600;
+        transition: all 0.3s;
+        margin-bottom: 1.5rem;
+        margin-top: 1rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+    }
+
+    .back-btn:hover {
+        background: #002f34;
+        color: white;
+        text-decoration: none;
+    }
+
+    /* ФОРМА КАРТАСЫ */
+    .form-card {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .form-header {
+        background: linear-gradient(135deg, #002f34 0%, #004144 100%);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .form-header h3 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .form-body {
+        padding: 2rem;
+    }
+
+    /* INPUT СТИЛЬДЕРІ */
+    .form-label {
+        font-weight: 600;
+        color: #002f34;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .form-control,
+    .form-select {
+        border: 2px solid #ddd;
+        border-radius: 4px;
+        padding: 0.7rem 1rem;
+        font-size: 0.95rem;
+        transition: all 0.3s;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #23e5db;
+        box-shadow: 0 0 0 0.2rem rgba(35, 229, 219, 0.25);
+        outline: none;
+    }
+
+    /* АВАТАР */
+    .avatar-preview {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #23e5db;
+        margin: 0 auto 1rem;
+        display: block;
+    }
+
+    .avatar-placeholder {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: #002f34;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        font-weight: 700;
+        margin: 0 auto 1rem;
+    }
+
+    /* БАТЫРМАЛАР */
+    .btn-save {
+        background: #23e5db;
+        color: #002f34;
+        border: none;
+        padding: 0.8rem 2rem;
+        font-weight: 700;
+        border-radius: 4px;
+        transition: all 0.3s;
+        width: 100%;
+    }
+
+    .btn-save:hover {
+        background: #00c8bb;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(35, 229, 219, 0.3);
+    }
+
+    .btn-cancel {
+        background: transparent;
+        border: 2px solid #ddd;
+        color: #555;
+        padding: 0.8rem 2rem;
+        font-weight: 600;
+        border-radius: 4px;
+        transition: all 0.3s;
+        width: 100%;
+        margin-top: 0.5rem;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+    }
+
+    .btn-cancel:hover {
+        background: #f4f4f4;
+        border-color: #002f34;
+        color: #002f34;
+        text-decoration: none;
+    }
+
+    .text-muted {
+        color: #7f8c8d;
+        font-size: 0.85rem;
+        margin-top: 0.3rem;
+        display: block;
+    }
+</style>
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <!-- АРТҚА БАТЫРМАСЫ -->
+            <a href="{% url 'profile' %}" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Артқа
+            </a>
+
+            <!-- ФОРМА КАРТАСЫ -->
+            <div class="form-card">
+                <div class="form-header">
+                    <h3>
+                        <i class="fas fa-user-edit"></i> Профильді өңдеу
+                    </h3>
+                </div>
+
+                <div class="form-body">
+                    <!-- АВАТАР -->
+                    <div class="text-center mb-4">
+                        {% if user.avatar %}
+                            <img src="{{ user.avatar.url }}" class="avatar-preview" alt="Аватар">
+                        {% else %}
+                            <div class="avatar-placeholder">
+                                {{ user.username|first|upper }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- ФОРМА -->
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="fas fa-user"></i> Аты
+                            </label>
+                            <input type="text" name="first_name" class="form-control"
+                                   value="{{ user.first_name }}" placeholder="Аты-жөніңіз">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="fas fa-user"></i> Тегі
+                            </label>
+                            <input type="text" name="last_name" class="form-control"
+                                   value="{{ user.last_name }}" placeholder="Тегі">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="fas fa-envelope"></i> Email
+                            </label>
+                            <input type="email" name="email" class="form-control"
+                                   value="{{ user.email }}" placeholder="example@gmail.com">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="fas fa-phone"></i> Телефон
+                            </label>
+                            <input type="text" name="phone" class="form-control"
+                                   value="{{ user.phone|default:'' }}" placeholder="+7 (777) 123-45-67">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="fas fa-map-marker-alt"></i> Қала
+                            </label>
+                            <select name="city" class="form-select">
+                                <option value="">Таңдаңыз</option>
+                                {% for city in cities %}
+                                <option value="{{ city.id }}" {% if user.city_id == city.id %}selected{% endif %}>
+                                    {{ city.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="fas fa-building"></i> Компания аты (міндетті емес)
+                            </label>
+                            <input type="text" name="company_name" class="form-control"
+                                   value="{{ user.company_name|default:'' }}" placeholder="ЖШС «Компания»">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">
+                                <i class="fas fa-camera"></i> Аватар жүктеу
+                            </label>
+                            <input type="file" name="avatar" class="form-control" accept="image/*">
+                            <small class="text-muted">PNG, JPG немесе JPEG</small>
+                        </div>
+
+                        <button type="submit" class="btn btn-save">
+                            <i class="fas fa-save"></i> Сақтау
+                        </button>
+
+                        <a href="{% url 'profile' %}" class="btn btn-cancel">
+                            <i class="fas fa-times"></i> Болдырмау
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

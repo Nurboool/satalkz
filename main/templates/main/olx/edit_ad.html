@@ -1,0 +1,68 @@
+{% extends "main/base.html" %}
+
+{% block title %}Жарнаманы өңдеу{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white">
+                <h3><i class="fas fa-edit"></i> Жарнаманы өңдеу</h3>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Тақырып</label>
+                        {{ form.title }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Сипаттама</label>
+                        {{ form.description }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Бағасы (₸)</label>
+                        {{ form.price }}
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Категория</label>
+                            {{ form.category }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Қала</label>
+                            {{ form.city }}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Жаңа суреттер қосу </label>
+                        <input type="file" name="images" class="form-control" multiple accept="image/*">
+                    </div>
+                    
+                    <!-- Қолданыстағы суреттер -->
+                    <div class="mb-3">
+                        <label class="form-label">Қазіргі суреттер:</label>
+                        <div class="row">
+                            {% for img in ad.images.all %}
+                            <div class="col-md-3 mb-2">
+                                <img src="{{ img.image.url }}" class="img-fluid rounded">
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success w-100">
+                        <i class="fas fa-save"></i> Сақтау
+                    </button>
+                    <a href="{% url 'my_ads' %}" class="btn btn-secondary w-100 mt-2">Бас тарту</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

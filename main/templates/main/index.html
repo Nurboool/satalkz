@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <title>Елді мекендер арасындағы қашықтықты есептеу</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        input[type="text"] {
+            width: 250px;
+            height: 30px;
+            font-size: 16px;
+            padding: 5px;
+
+        }
+
+        .form-row {
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 8px 15px;
+            font-size: 15px;
+            margin-right: 50px;
+            cursor: pointer;
+        }
+
+        .result-input {
+            width: 250px;
+            height: 30px;
+            font-size: 16px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Елді мекендер арасындағы қашықтықты есептеу</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-row">
+            <label>Картаның масштабы (бір см/км саны) -></label>
+            <input type="text" name="scale" value="{{ scale }}" required>
+        </div>
+
+        <div class="form-row">
+            <label>Нүктелер арасындағы қашықтық (см) -></label>
+            <input type="text" name="distance_cm" value="{{ distance_cm }}" required>
+        </div>
+
+        <div class="form-row">
+            <label>Елді мекендер арасындағы қашықтық-></label>
+            <input type="text" class="result-input" value="{{ result }}" readonly>
+        </div>
+
+        <button type="submit" name="calculate">Есептеу</button>
+        <button type="submit" name="clear">Тазарту</button>
+    </form>
+
+    <a href="/" ><h3>Басты бет</h3></a>
+</body>
+</html>

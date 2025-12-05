@@ -1,0 +1,27 @@
+{% extends "main/base.html" %}
+
+{% block title %}Жарнаманы жою{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-danger text-white">
+                <h3><i class="fas fa-exclamation-triangle"></i> Растау</h3>
+            </div>
+            <div class="card-body text-center">
+                <h4>Сіз шынымен жоямыз ба?</h4>
+                <p class="text-muted">{{ ad.title }}</p>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Иә, жою
+                    </button>
+                    <a href="{% url 'my_ads' %}" class="btn btn-secondary">Жоқ, қайту</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

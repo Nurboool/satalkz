@@ -1,0 +1,40 @@
+{% extends 'main/base.html' %}
+{% block title %}Профильді өзгерту{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white text-center">
+                    <h3>Профильді өзгерту</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label>Аватар</label>
+                            <input type="file" name="avatar" class="form-control" accept="image/*">
+                        </div>
+                        <div class="mb-3">
+                            <label>Телефон</label>
+                            <input type="text" name="phone" value="{{ user.phone }}" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label>Компания аты</label>
+                            <input type="text" name="company_name" value="{{ user.company_name }}" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label>Мекен-жай</label>
+                            <input type="text" name="address" value="{{ user.address }}" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Сақтау</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <a href="{% url 'profile' %}">← Профильге қайту</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

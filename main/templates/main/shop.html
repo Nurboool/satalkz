@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sulpak</title>
+    {% load static %}
+
+</head>
+<body>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="kk">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Kaspi Shop</title>
+    {% load static %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .products {
+            margin-top: 20px;
+        }
+        .products img {
+            width: 250px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 5px;
+            margin-top: 20px;
+        }
+        .radio-buttons {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Таңдаған тауардың суреті</h1>
+
+    <form method="get" class="radio-buttons">
+        {% for img in images %}
+            <label style="margin-right: 15px;">
+                <input type="radio" name="product" value="{{ img.id }}"
+                       {% if selected_image.id == img.id %}checked{% endif %}
+                       onchange="this.form.submit()">
+                {{ img.name }}
+            </label>
+        {% endfor %}
+    </form>
+
+    <div class="products">
+        <h2>{{ selected_image.name }}</h2>
+       <img src="{% static selected_image.image %}" alt="{{ selected_image.name }}">
+    </div>
+
+     <a href="/" ><h3>Басты бет</h3></a>
+</body>
+</html>

@@ -1,0 +1,195 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}Аналитика - OLX.KZ{% endblock %}
+
+{% block content %}
+<style>
+    .back-btn {
+        background: transparent;
+        border: 2px solid #002f34;
+        color: #002f34;
+        padding: 0.6rem 1.5rem;
+        border-radius: 4px;
+        font-weight: 600;
+        transition: all 0.3s;
+        margin-bottom: 1.5rem;
+        margin-top: 1rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+    }
+    
+    .back-btn:hover {
+        background: #002f34;
+        color: white;
+        text-decoration: none;
+    }
+    
+    .page-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #002f34;
+        margin-bottom: 2rem;
+        padding-left: 1rem;
+        border-left: 5px solid #23e5db;
+    }
+    
+    .stat-card {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 1.5rem;
+        text-align: center;
+        transition: all 0.3s;
+        margin-bottom: 1.5rem;
+    }
+    
+    .stat-card:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transform: translateY(-4px);
+    }
+    
+    .stat-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #002f34;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+        color: #7f8c8d;
+        font-size: 1rem;
+    }
+    
+    .table-card {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .table-card h4 {
+        color: #002f34;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+    
+    .table {
+        margin-bottom: 0;
+    }
+    
+    .table th {
+        background: #f4f4f4;
+        color: #002f34;
+        font-weight: 700;
+    }
+</style>
+
+<div class="container py-4">
+    <a href="{% url 'all_ads' %}" class="back-btn">
+        <i class="fas fa-arrow-left"></i> Артқа
+    </a>
+
+    <h1 class="page-title">
+        <i class="fas fa-chart-line"></i> Аналитика
+    </h1>
+
+    <!-- СТАТИСТИКА -->
+    <div class="row">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon" style="color: #3498db;">
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <div class="stat-number">{{ total_ads }}</div>
+                <div class="stat-label">Барлық жарнамалар</div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon" style="color: #2ecc71;">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-number">{{ approved_ads }}</div>
+                <div class="stat-label">Бекітілген</div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon" style="color: #f39c12;">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-number">{{ pending_ads }}</div>
+                <div class="stat-label">Модерацияда</div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon" style="color: #9b59b6;">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-number">{{ total_users }}</div>
+                <div class="stat-label">Қолданушылар</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ҚАЛАЛАР БОЙЫНША -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="table-card">
+                <h4><i class="fas fa-map-marker-alt"></i> Қалалар бойынша</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Қала</th>
+                            <th>Жарнамалар саны</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for stat in city_stats %}
+                        <tr>
+                            <td>{{ stat.city__name|default:"Белгісіз" }}</td>
+                            <td><strong>{{ stat.count }}</strong></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="table-card">
+                <h4><i class="fas fa-tags"></i> Категориялар бойынша</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Категория</th>
+                            <th>Жарнамалар саны</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for stat in category_stats %}
+                        <tr>
+                            <td>{{ stat.category__name|default:"Белгісіз" }}</td>
+                            <td><strong>{{ stat.count }}</strong></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

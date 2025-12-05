@@ -1,0 +1,64 @@
+{% extends "main/base.html" %}
+
+{% block title %}Қолданушыларды басқару - OLX.KZ{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">
+        <i class="fas fa-users"></i> Қолданушыларды басқару
+    </h1>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Қолданушы</th>
+                    <th>Email</th>
+                    <th>Рөл</th>
+                    <th>Жарнамалар</th>
+                    <th>Тіркелген</th>
+                    <th>Әрекеттер</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>
+                        <strong>{{ user.username }}</strong>
+                        {% if user == request.user %}
+                        <span class="badge bg-primary">Сіз</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        <form method="post" action="{% url 'change_user_role' user.id %}" style="display: inline;">
+                            {% csrf_token %}
+                            <select name="role" class="form-select form-select-sm"
+                                    onchange="this.form.submit()"
+                                    {% if user == request.user %}disabled{% endif %}>
+                                <option value="user" {% if user.role == 'user' %}selected{% endif %}>Қолданушы</option>
+                                <option value="director" {% if user.role == 'director' %}selected{% endif %}>Директор</option>
+                                <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Әкімші</option>
+                            </select>
+                        </form>
+                    </td>
+                    <td>{{ user.ad_set.count }}</td>
+                    <td>{{ user.date_joined|date:"d.m.Y" }}</td>
+                    <td>
+                        {% if user != request.user %}
+                        <a href="{% url 'delete_user' user.id %}"
+                           class="btn btn-sm btn-danger"
+                           onclick="return confirm('Өшіруге сенімдісіз бе?')">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ҚР Ұлттық банкін парсингтеу</title>
+</head>
+<body>
+
+<form method="post">
+    {% csrf_token %}
+    <h2>Валюта </h2>
+
+    <label>Доллар (USD):</label>
+    <input type="text" name="dollar" value="{{ dollar }}" disabled  style="margin-left:10px">
+    <br><br>
+
+    <label>Еуро (EUR):</label>
+    <input type="text" name="euro" value="{{ euro }}" disabled style="margin-left:25px">
+    <br><br>
+
+    <label>Юань (CNY):</label>
+    <input type="text" name="iyan" value="{{ iyan }}" disabled style="margin-left:20px">
+    <br><br>
+
+    <label>Рубль (RUB):</label>
+    <input type="text" name="rubl" value="{{ rubl }}" disabled  style="margin-left:20px">
+    <br><br><br>
+
+    <input type="submit" name="calculate" value="Парсингтеу">
+    <input type="submit" name="clear" value="Тазарту">
+    <br><br><br>
+
+    <a href="/">Басты бет</a>
+
+</form>
+
+</body>
+</html>

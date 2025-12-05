@@ -1,0 +1,421 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}SatAl.KZ - Барлық хабарландырулар{% endblock %}
+
+{% block content %}
+<style>
+    /* HERO SECTION - КОМПАКТ */
+    .hero-section {
+        background: linear-gradient(135deg, #002f34 0%, #00a015 50%, #008a11 100%);
+        padding: 25px 0;
+        color: white;
+        text-align: center;
+        margin: 0;
+    }
+
+    .hero-section h1 {
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .hero-section p {
+        font-size: 1rem;
+        opacity: 0.95;
+        margin-bottom: 1rem;
+    }
+
+    /* ІЗДЕУ БЛОГІ */
+    .search-box {
+        background: white;
+        padding: 1.2rem;
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    .search-box .form-control,
+    .search-box .form-select {
+        height: 48px;
+        font-size: 0.95rem;
+        border: 2px solid #ddd;
+        border-radius: 4px;
+        font-weight: 500;
+    }
+
+    .search-box .form-control:focus,
+    .search-box .form-select:focus {
+        border-color: #23e5db;
+        box-shadow: 0 0 0 0.2rem rgba(35, 229, 219, 0.25);
+        outline: none;
+    }
+
+    .search-box .btn {
+        height: 48px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        border-radius: 4px;
+    }
+
+    .search-box .btn-primary {
+        background: #002f34;
+        border: none;
+    }
+
+    .search-box .btn-primary:hover {
+        background: #004144;
+    }
+
+    /* АРТҚА БАТЫРМАСЫ */
+    .back-btn {
+        background: transparent;
+        border: 2px solid #002f34;
+        color: #002f34;
+        padding: 0.5rem 1.5rem;
+        border-radius: 4px;
+        font-weight: 600;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+        margin-bottom: 1rem;
+    }
+
+    .back-btn:hover {
+        background: #002f34;
+        color: white;
+        text-decoration: none;
+    }
+
+    /* ХАБАРЛАНДЫРУ ҚОС БАТЫРМАСЫ */
+    .btn-create {
+        background: #ffce32;
+        color: #002f34;
+        border: none;
+        padding: 0.7rem 2rem;
+        font-size: 1rem;
+        font-weight: 700;
+        border-radius: 4px;
+        transition: all 0.3s;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+        margin-top: 1rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-create:hover {
+        background: #ffc000;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        color: #002f34;
+        text-decoration: none;
+    }
+
+    /* НЕГІЗГІ КОНТЕНТ */
+    .main-content {
+        background: white;
+        margin-top: 2rem;
+        padding: 2rem 0;
+    }
+
+    /* ТАҚЫРЫП */
+    .section-title {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #002f34;
+        margin-bottom: 2rem;
+        padding-left: 1rem;
+        border-left: 5px solid #23e5db;
+    }
+
+    /* КАРТОЧКАЛАР */
+    .ad-card {
+        transition: all 0.3s ease;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        overflow: hidden;
+        background: white;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .ad-card:hover {
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        transform: translateY(-4px);
+        border-color: #23e5db;
+        text-decoration: none;
+    }
+
+    /* СУРЕТ КОНТЕЙНЕРІ */
+    .ad-image-container {
+        position: relative;
+        width: 100%;
+        padding-top: 100%;
+        overflow: hidden;
+        background: #f9f9f9;
+    }
+
+    .ad-card img,
+    .ad-image-container img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background: white;
+        transition: transform 0.3s;
+    }
+
+    .ad-card:hover img {
+        transform: scale(1.05);
+    }
+
+    /* CARD BODY */
+    .ad-card .card-body {
+        padding: 1rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* БАҒА */
+    .ad-card .price {
+        font-size: 1.5rem;
+        font-weight: 900;
+        color: #002f34;
+        margin-bottom: 0.5rem;
+    }
+
+    /* ТАҚЫРЫП */
+    .ad-card .title {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #002f34;
+        margin-bottom: 0.5rem;
+        height: 2.5rem;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        line-height: 1.3;
+    }
+
+    /* СИПАТТАМА */
+    .ad-card .description {
+        color: #7f8c8d;
+        font-size: 0.85rem;
+        height: 2.5rem;
+        overflow: hidden;
+        margin-bottom: 0.5rem;
+    }
+
+    /* ҚАЛА ЖӘНЕ КҮНІ */
+    .ad-card .meta-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: auto;
+        padding-top: 0.5rem;
+        border-top: 1px solid #f0f0f0;
+        font-size: 0.85rem;
+        color: #7f8c8d;
+    }
+
+    .ad-card .location {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    /* КАТЕГОРИЯ БЕЙДЖІ */
+    .category-badge {
+        background: #f0f0f0;
+        color: #002f34;
+        padding: 0.25rem 0.75rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        display: inline-block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    /* БОС КҮЙІ */
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: #7f8c8d;
+    }
+
+    .empty-state i {
+        font-size: 5rem;
+        color: #ddd;
+        margin-bottom: 1rem;
+    }
+
+    .empty-state h3 {
+        color: #002f34;
+        margin-bottom: 1rem;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: 20px 0;
+        }
+
+        .hero-section h1 {
+            font-size: 1.8rem;
+        }
+
+        .hero-section p {
+            font-size: 0.9rem;
+        }
+
+        .search-box {
+            padding: 1rem;
+        }
+
+        .search-box .form-control,
+        .search-box .form-select,
+        .search-box .btn {
+            height: 42px;
+            font-size: 0.9rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+
+<!-- HERO SECTION -->
+<div class="hero-section">
+    <div class="container">
+        <div class="text-center">
+            <h1> SatAl.KZ</h1>
+            <p>Қазақстандағы ең үлкен хабарландырулар алаңы</p>
+        </div>
+
+        <!-- ІЗДЕУ БЛОГІ -->
+        <div class="search-box">
+            <form method="get" action="{% url 'all_ads' %}">
+                <div class="row g-2">
+                    <div class="col-lg-5">
+                        <input type="text" name="search" class="form-control"
+                               placeholder="🔍 Не іздеп жатырсыз?"
+                               value="{{ search_query }}">
+                    </div>
+                    <div class="col-lg-3">
+                        <select name="category" class="form-select">
+                            <option value="">Барлық категория</option>
+                            {% for cat in categories %}
+                            <option value="{{ cat.id }}" {% if selected_category == cat.id|stringformat:"s" %}selected{% endif %}>
+                                {{ cat.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-lg-2">
+                        <select name="city" class="form-select">
+                            <option value="">Барлық қала</option>
+                            {% for city in cities %}
+                            <option value="{{ city.id }}" {% if selected_city == city.id|stringformat:"s" %}selected{% endif %}>
+                                {{ city.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-lg-2">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-search"></i> Іздеу
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- ХАБАРЛАНДЫРУ ҚОС -->
+        {% if user.is_authenticated %}
+        <div class="text-center">
+            <a href="{% url 'create_ad' %}" class="btn-create">
+                <i class="fas fa-plus-circle"></i> Хабарландыру қосу
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- ЖАРНАМАЛАР -->
+<div class="main-content">
+    <div class="container">
+        <!-- АРТҚА БАТЫРМАСЫ (тақырыптың үстінде) -->
+        {% if search_query or selected_category or selected_city %}
+        <div class="mb-3">
+            <a href="{% url 'all_ads' %}" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Артқа
+            </a>
+        </div>
+        {% endif %}
+
+        <h2 class="section-title"> Соңғы хабарландырулар</h2>
+
+        <div class="row g-3">
+            {% for ad in ads %}
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <a href="{% url 'ad_detail' ad.id %}" class="card ad-card">
+                    <div class="ad-image-container">
+                        {% with ad.images.first as img %}
+                        <img src="{% if img %}{{ img.image.url }}{% else %}{% static 'images/no-photo.png' %}{% endif %}" alt="{{ ad.title }}">
+                        {% endwith %}
+                    </div>
+
+                    <div class="card-body">
+                        <span class="category-badge">{{ ad.category.name }}</span>
+
+                        <div class="price">{{ ad.price }} ₸</div>
+                        <h5 class="title">{{ ad.title }}</h5>
+                        <p class="description">{{ ad.description|truncatewords:8 }}</p>
+
+                        <div class="meta-info">
+                            <span class="location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                {{ ad.city.name }}
+                            </span>
+                            <span>
+                                <i class="far fa-clock"></i>
+                                {{ ad.created_at|date:"d.m" }}
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <h3>Хабарландырулар жоқ</h3>
+                    <p>Алғашқы болып жарнама қосыңыз!</p>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'create_ad' %}" class="btn-create btn-lg mt-3">
+                        <i class="fas fa-plus"></i> Хабарландыру қосу
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

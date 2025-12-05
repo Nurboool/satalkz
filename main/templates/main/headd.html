@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <title>Басты бет</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+
+<div class="container mt-4">
+
+    <h1 class="text-center mb-5">Менің Django жобам</h1>
+
+    
+    <div class="list-group">
+        <a href="{% url 'index' %}" class="list-group-item list-group-item-action">1 - шы тапсырма</a>
+        <a href="{% url 'shop' %}" class="list-group-item list-group-item-action">2 - шы тапсырма</a>
+        <a href="{% url 'shop' %}" class="list-group-item list-group-item-action">3 - шы тапсырма</a>
+        <a href="{% url 'shop' %}" class="list-group-item list-group-item-action">4 - шы тапсырма</a>
+        <a href="{% url 'exchange' %}" class="list-group-item list-group-item-action text-success font-weight-bold">СӨЖ</a>
+        <a href="{% url 'tempp' %}" class="list-group-item list-group-item-action">5.1 - шы тапсырма</a>
+        <a href="{% url 'export' %}" class="list-group-item list-group-item-action">5.2 - шы тапсырма</a>
+        <a href="{% url 'aud6' %}" class="list-group-item list-group-item-action">6 - шы тапсырма</a>
+        <a href="{% url 'aud7' %}" class="list-group-item list-group-item-action">7 - шы тапсырма</a>
+
+
+        <a href="{% url 'login' %}?next={% url 'all_ads' %}"
+           class="list-group-item list-group-item-action text-primary font-weight-bold">
+            СӨЖ-2
+        </a>
+    </div>
+
+</div>
+</body>
+</html>

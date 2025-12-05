@@ -1,0 +1,49 @@
+{% extends "main/base.html" %}
+{% block title %}Жаңа хабарландыру{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-success text-white text-center">
+                <h3><i class="fas fa-plus-circle"></i> Жаңа хабарландыру қосу</h3>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">{{ form.title.label }}</label>
+                        {{ form.title }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">{{ form.description.label }}</label>
+                        {{ form.description }}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">{{ form.price.label }}</label>
+                            {{ form.price }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">{{ form.category.label }}</label>
+                            {{ form.category }}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">{{ form.city.label }}</label>
+                        {{ form.city }}
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Фотосуреттер </label>
+                        <input type="file" name="images" multiple accept="image/*" class="form-control" required>
+                        <small class="text-muted">Ctrl басу арқылы бірнеше фотосурет таңдаңыз</small>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success btn-lg px-5">Жариялау</button>
+                        <a href="{% url 'all_ads' %}" class="btn btn-secondary btn-lg ms-3">Бас тарту</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

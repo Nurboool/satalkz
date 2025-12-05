@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}OLX.KZ{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            background: #f4f4f4;
+            min-height: 100vh;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* NAVBAR - ҚАРА ФОН */
+        .navbar {
+            background-color: #002f34 !important;
+            padding: 0.8rem 0;
+            margin-bottom: 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            font-size: 2.5rem !important;
+            font-weight: 900;
+            color: white !important;
+            letter-spacing: -2px;
+        }
+
+        .navbar .nav-link {
+            color: white !important;
+            font-weight: 500;
+            font-size: 1rem;
+            padding: 0.5rem 1rem !important;
+        }
+
+        .navbar .dropdown-toggle::after {
+            display: none;
+        }
+
+        .navbar .btn-outline-light {
+            border: 2px solid white;
+            color: white;
+            font-weight: 700;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .navbar .btn-outline-light:hover {
+            background: white;
+            color: #002f34;
+        }
+
+        /* DROPDOWN */
+        .dropdown-menu {
+            border: none;
+            border-radius: 4px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            padding: 0.5rem 0;
+        }
+
+        .dropdown-item {
+            padding: 0.7rem 1.5rem;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .dropdown-item:hover {
+            background: #f4f4f4;
+            padding-left: 2rem;
+        }
+
+        /* БАТЫРМАЛАР */
+        .btn-primary {
+            background-color: #002f34;
+            border: none;
+            font-weight: 700;
+            padding: 0.7rem 1.5rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #004144;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background-color: #23e5db;
+            border: none;
+            color: #002f34;
+            font-weight: 700;
+            padding: 0.7rem 1.5rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .btn-success:hover {
+            background-color: #00c8bb;
+            transform: translateY(-2px);
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #002f34;
+        }
+
+        /* CONTAINER */
+        .container {
+            padding-top: 0 !important;
+            max-width: 1280px;
+        }
+
+        /* ALERTS */
+        .alert {
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .dropdown-toggle[aria-expanded="true"] .fa-chevron-down {
+            transform: rotate(180deg);
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+
+<!-- НАВИГАЦИЯ - OLX СТИЛЬ -->
+<!-- НАВИГАЦИЯ - OLX СТИЛЬ -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'all_ads' %}">
+            <i class="fas fa-shopping-bag" style="font-size: 2rem; margin-right: 5px;"></i>
+            SatAl.KZ
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle"></i> {{ user.username }}
+                            <i class="fas fa-chevron-down" style="font-size: 0.75rem; margin-left: 0.3rem;"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{% url 'profile' %}">
+                                <i class="fas fa-user"></i> Профиль
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'my_ads' %}">
+                                <i class="fas fa-list"></i> Менің хабарландыруларым
+                            </a></li>
+                            {% if user.is_director %}
+                            <li><a class="dropdown-item" href="{% url 'analytics' %}">
+                                <i class="fas fa-chart-line"></i> Аналитика
+                            </a></li>
+                            {% endif %}
+                                                       {% if user.is_admin_user %}
+                            <li><a class="dropdown-item" href="{% url 'manage_users' %}">
+                                <i class="fas fa-users-cog"></i> Қолданушылар
+                            </a></li>
+                            {% endif %}
+
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">
+                                <i class="fas fa-sign-out-alt"></i> Шығу
+                            </a></li>
+
+                        </ul>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">
+                            <i class="fas fa-sign-in-alt"></i> Кіру
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-light ms-2" href="{% url 'register' %}">
+                            Тіркелу
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <!-- ХАБАРЛАМАЛАР -->
+    {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- КОНТЕНТ -->
+    {% block content %}
+    {% endblock %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

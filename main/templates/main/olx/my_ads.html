@@ -1,0 +1,357 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}Менің хабарландыруларым - OLX.KZ{% endblock %}
+
+{% block content %}
+<style>
+    /* АРТҚА БАТЫРМАСЫ */
+    .back-btn {
+        background: transparent;
+        border: 2px solid #002f34;
+        color: #002f34;
+        padding: 0.6rem 1.5rem;
+        border-radius: 4px;
+        font-weight: 600;
+        transition: all 0.3s;
+        margin-bottom: 1.5rem;
+        margin-top: 1rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+    }
+
+    .back-btn:hover {
+        background: #002f34;
+        color: white;
+        text-decoration: none;
+    }
+
+    /* ТАҚЫРЫП */
+    .page-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #002f34;
+        margin-bottom: 2rem;
+        padding-left: 1rem;
+        border-left: 5px solid #23e5db;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    /* ЖАРНАМА КАРТОЧКАСЫ */
+    .my-ad-card {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: all 0.3s;
+        margin-bottom: 1.5rem;
+    }
+
+    .my-ad-card:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transform: translateY(-2px);
+    }
+
+    .ad-row {
+        display: flex;
+        padding: 1.5rem;
+        gap: 1.5rem;
+    }
+
+    /* СУРЕТ */
+    .ad-image {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 8px;
+        flex-shrink: 0;
+    }
+
+    /* АҚПАРАТ */
+    .ad-info {
+        flex: 1;
+    }
+
+    .ad-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #002f34;
+        margin-bottom: 0.5rem;
+    }
+
+    .ad-description {
+        color: #555;
+        margin-bottom: 1rem;
+        line-height: 1.5;
+    }
+
+    .ad-price {
+        font-size: 1.5rem;
+        font-weight: 900;
+        color: #23e5db;
+        margin-bottom: 0.5rem;
+    }
+
+    .ad-meta {
+        display: flex;
+        gap: 1.5rem;
+        color: #7f8c8d;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .ad-meta span {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    /* СТАТУС БЕЙДЖДЕРІ */
+    .status-badge {
+        display: inline-block;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .status-pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .status-approved {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    /* БАТЫРМАЛАР */
+    .ad-actions {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-sm {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        border-radius: 4px;
+        transition: all 0.3s;
+        border: none;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        cursor: pointer;
+    }
+
+    .btn-view {
+        background: #002f34;
+        color: white;
+    }
+
+    .btn-view:hover {
+        background: #004144;
+        transform: translateY(-2px);
+        color: white;
+        text-decoration: none;
+    }
+
+    .btn-edit {
+        background: #23e5db;
+        color: #002f34;
+    }
+
+    .btn-edit:hover {
+        background: #00c8bb;
+        transform: translateY(-2px);
+        color: #002f34;
+        text-decoration: none;
+    }
+
+    .btn-delete {
+        background: #dc3545;
+        color: white;
+    }
+
+    .btn-delete:hover {
+        background: #c82333;
+        transform: translateY(-2px);
+    }
+
+    /* БОС КҮЙІ */
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+    }
+
+    .empty-state i {
+        font-size: 5rem;
+        color: #ddd;
+        margin-bottom: 1rem;
+    }
+
+    .empty-state h3 {
+        color: #002f34;
+        margin-bottom: 1rem;
+    }
+
+    .empty-state p {
+        color: #7f8c8d;
+        margin-bottom: 2rem;
+    }
+
+    .btn-create {
+        background: #ffce32;
+        color: #002f34;
+        border: none;
+        padding: 0.8rem 2rem;
+        font-weight: 700;
+        border-radius: 4px;
+        transition: all 0.3s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-create:hover {
+        background: #ffc000;
+        transform: translateY(-2px);
+        color: #002f34;
+        text-decoration: none;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+        .ad-row {
+            flex-direction: column;
+        }
+
+        .ad-image {
+            width: 100%;
+            height: 200px;
+        }
+
+        .ad-actions {
+            flex-direction: column;
+        }
+
+        .btn-sm {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+
+<div class="container py-4">
+    <!-- АРТҚА БАТЫРМАСЫ -->
+    <a href="{{ request.META.HTTP_REFERER|default:'/olx/' }}" class="back-btn">
+        <i class="fas fa-arrow-left"></i> Артқа
+    </a>
+
+    <!-- ТАҚЫРЫП -->
+    <h1 class="page-title">
+        <i class="fas fa-list"></i>
+        <span>Менің хабарландыруларым</span>
+    </h1>
+
+    {% if ads %}
+        <!-- ЖАРНАМАЛАР ТІЗІМІ -->
+        {% for ad in ads %}
+        <div class="my-ad-card">
+            <div class="ad-row">
+                <!-- СУРЕТ -->
+                <div>
+                    {% with ad.images.first as img %}
+                    <img src="{% if img %}{{ img.image.url }}{% else %}{% static 'images/no-photo.png' %}{% endif %}"
+                         class="ad-image" alt="{{ ad.title }}">
+                    {% endwith %}
+                </div>
+
+                <!-- АҚПАРАТ -->
+                <div class="ad-info">
+                    <!-- СТАТУС -->
+                    {% if ad.is_moderated %}
+                        <span class="status-badge status-approved">
+                            <i class="fas fa-check-circle"></i> Бекітілген
+                        </span>
+                    {% else %}
+                        <span class="status-badge status-pending">
+                            <i class="fas fa-clock"></i> Модерацияда
+                        </span>
+                    {% endif %}
+
+                    <!-- ТАҚЫРЫП -->
+                    <h3 class="ad-title">{{ ad.title }}</h3>
+
+                    <!-- СИПАТТАМА -->
+                    <p class="ad-description">{{ ad.description|truncatewords:20 }}</p>
+
+                    <!-- БАҒА -->
+                    <div class="ad-price">{{ ad.price }} ₸</div>
+
+                    <!-- МЕТА АҚПАРАТ -->
+                    <div class="ad-meta">
+                        <span>
+                            <i class="fas fa-map-marker-alt"></i>
+                            {{ ad.city.name }}
+                        </span>
+                        <span>
+                            <i class="fas fa-eye"></i>
+                            {{ ad.views }} көрулер
+                        </span>
+                        <span>
+                            <i class="far fa-calendar"></i>
+                            {{ ad.created_at|date:"d.m.Y" }}
+                        </span>
+                    </div>
+
+                    <!-- БАТЫРМАЛАР -->
+                    <div class="ad-actions">
+                        <a href="{% url 'ad_detail' ad.id %}" class="btn-sm btn-view">
+                            <i class="fas fa-eye"></i> Толық қарау
+                        </a>
+                        <a href="{% url 'edit_ad' ad.id %}" class="btn-sm btn-edit">
+                            <i class="fas fa-edit"></i> Өзгерту
+                        </a>
+                        <form method="post" action="{% url 'delete_ad' ad.id %}" style="display: inline;"
+                              onsubmit="return confirm('Жарнаманы өшіруге сенімдісіз бе?')">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-sm btn-delete">
+                                <i class="fas fa-trash"></i> Жою
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    {% else %}
+        <!-- БОС КҮЙІ -->
+        <div class="empty-state">
+            <i class="fas fa-inbox"></i>
+            <h3>Сізде әлі жарнамалар жоқ</h3>
+            <p>Алғашқы хабарландырыңызды қосыңыз!</p>
+            <a href="{% url 'create_ad' %}" class="btn-create">
+                <i class="fas fa-plus-circle"></i> Хабарландыру қосу
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

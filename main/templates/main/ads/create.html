@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+{% block content %}
+<div class="card mx-auto" style="max-width: 500px; margin-top: 40px;">
+    <div class="card-header text-center" style="background:#00ba1a; color:white;">
+        <h4>Жаңа хабарландыру қосу</h4>
+    </div>
+    <div class="card-body p-4">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.title.label }} {{ form.title }}
+            <div class="my-3">{{ form.description.label }} {{ form.description }}</div>
+            <div class="my-3">{{ form.price.label }} {{ form.price }}</div>
+            <div class="my-3">{{ form.category.label }} {{ form.category }}</div>
+            <div class="my-3">{{ form.city.label }} {{ form.city }}</div>
+            <div class="mb-4">
+                <label class="form-label fw-500">Фотосуреттер (5-ке дейін)</label>
+                <input type="file" name="images" multiple accept="image/*" class="form-control" required>
+                <small class="text-muted">Бірден бірнеше фотосуретті таңдаңыз (Ctrl басу арқылы)</small>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Жариялау</button>
+        </form>
+        <div class="text-center mt-3">
+            <a href="{% url 'headd' %}">← Басты бетке</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

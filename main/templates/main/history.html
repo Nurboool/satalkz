@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тарих</title>
+    <style>
+        body {
+            font-family: Arial;
+            margin: 20px;
+            background: white;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .total {
+            background: #e3f2fd;
+            padding: 15px;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .item {
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .profit {
+            color: green;
+            font-weight: bold;
+        }
+        button {
+            padding: 10px 20px;
+            background: #666;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Транзакция тарихы</h1>
+
+
+    {% if history %}
+        {% for item in history %}
+        <div class="item">
+            <div><strong>
+                {% if item.operation == 'buy' %}Покупка{% else %}Продажа{% endif %}:
+                {{ item.amount }} {{ item.currency }} = {{ item.result }} ₸
+            </strong></div>
+            <div class="profit">Прибыль: {{ item.profit }} ₸</div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div style="text-align: center; color: #666;">
+            Тарих бос
+        </div>
+    {% endif %}
+
+    <div style="text-align: center; margin-top: 20px;">
+        <button onclick="window.close()">Жабу</button>
+    </div>
+</body>
+</html>

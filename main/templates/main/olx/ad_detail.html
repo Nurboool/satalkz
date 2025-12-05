@@ -1,0 +1,386 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}{{ ad.title }} - OLX.KZ{% endblock %}
+
+{% block content %}
+<style>
+    /* КОНТЕЙНЕР */
+    .ad-detail-page {
+        background: white;
+        min-height: 100vh;
+        padding: 2rem 0;
+    }
+
+    /* АРТҚА БАТЫРМАСЫ */
+    .back-btn {
+        background: transparent;
+        border: 2px solid #002f34;
+        color: #002f34;
+        padding: 0.6rem 1.5rem;
+        border-radius: 4px;
+        font-weight: 600;
+        transition: all 0.3s;
+        margin-bottom: 1.5rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+    }
+
+    .back-btn:hover {
+        background: #002f34;
+        color: white;
+        text-decoration: none;
+    }
+
+    /* СУРЕТ ГАЛЕРЕЯСЫ */
+    .image-gallery {
+        background: #f4f4f4;
+        border-radius: 8px;
+        padding: 2rem;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .main-image {
+        width: 100%;
+        max-height: 500px;
+        object-fit: contain;
+        border-radius: 8px;
+    }
+
+    .thumbnail-container {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .thumbnail {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 4px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 0.3s;
+    }
+
+    .thumbnail:hover {
+        border-color: #23e5db;
+        transform: scale(1.05);
+    }
+
+    /* АҚПАРАТ БӨЛІМІ */
+    .info-card {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 2rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    /* ТАҚЫРЫП */
+    .ad-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #002f34;
+        margin-bottom: 1rem;
+    }
+
+    /* БАҒА */
+    .ad-price {
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: #23e5db;
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    /* МӘЛІМЕТТЕР */
+    .info-row {
+        padding: 1rem 0;
+        border-bottom: 1px solid #f0f0f0;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .info-row:last-child {
+        border-bottom: none;
+    }
+
+    .info-label {
+        font-weight: 600;
+        color: #002f34;
+        min-width: 150px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .info-value {
+        color: #555;
+        font-size: 1rem;
+    }
+
+    /* СИПАТТАМА */
+    .description-section {
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 2px solid #f0f0f0;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #002f34;
+        margin-bottom: 1rem;
+    }
+
+    .description-text {
+        color: #555;
+        line-height: 1.8;
+        font-size: 1rem;
+    }
+
+    /* БАЙЛАНЫС */
+    .contact-section {
+        background: #f9f9f9;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-top: 2rem;
+    }
+
+    .contact-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .contact-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: #002f34;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .contact-name {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #002f34;
+    }
+
+    /* БАТЫРМАЛАР */
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+
+    .btn-contact {
+        flex: 1;
+        background: #23e5db;
+        color: #002f34;
+        border: none;
+        padding: 1rem;
+        font-weight: 700;
+        border-radius: 4px;
+        font-size: 1.1rem;
+        transition: all 0.3s;
+    }
+
+    .btn-contact:hover {
+        background: #00c8bb;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(35, 229, 219, 0.3);
+    }
+
+    .btn-edit {
+        flex: 1;
+        background: #ffce32;
+        color: #002f34;
+        border: none;
+        padding: 1rem;
+        font-weight: 700;
+        border-radius: 4px;
+        font-size: 1.1rem;
+        transition: all 0.3s;
+    }
+
+    .btn-edit:hover {
+        background: #ffc000;
+        transform: translateY(-2px);
+    }
+
+    .btn-delete {
+        flex: 1;
+        background: #dc3545;
+        color: white;
+        border: none;
+        padding: 1rem;
+        font-weight: 700;
+        border-radius: 4px;
+        font-size: 1.1rem;
+        transition: all 0.3s;
+    }
+
+    .btn-delete:hover {
+        background: #c82333;
+        transform: translateY(-2px);
+    }
+
+    /* БЕЙДЖ */
+    .category-badge {
+        background: #f0f0f0;
+        color: #002f34;
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        display: inline-block;
+        margin-bottom: 1rem;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+        .ad-title {
+            font-size: 1.5rem;
+        }
+
+        .ad-price {
+            font-size: 2rem;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
+    }
+
+</style>
+
+<div class="ad-detail-page">
+    <div class="container">
+        <!-- АРТҚА -->
+        <a href="{{ back_url }}" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Артқа
+        </a>
+
+        <div class="row">
+            <!-- СОЛ ЖАҒЫ: СУРЕТ -->
+            <div class="col-lg-8 mb-4">
+                <div class="image-gallery">
+                    {% with ad.images.first as main_img %}
+                    <img src="{% if main_img %}{{ main_img.image.url }}{% else %}{% static 'images/no-photo.png' %}{% endif %}"
+                         class="main-image" alt="{{ ad.title }}" id="mainImage">
+                    {% endwith %}
+
+                    <!-- КІШКЕНТАЙ СУРЕТТЕР -->
+                    {% if ad.images.all %}
+                    <div class="thumbnail-container">
+                        {% for img in ad.images.all %}
+                        <img src="{{ img.image.url }}" class="thumbnail"
+                             onclick="document.getElementById('mainImage').src='{{ img.image.url }}'">
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- СИПАТТАМА -->
+                <div class="info-card">
+                    <div class="description-section">
+                        <h3 class="section-title">📝 Сипаттама</h3>
+                        <p class="description-text">{{ ad.description|linebreaks }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ОҢ ЖАҒЫ: АҚПАРАТ -->
+            <div class="col-lg-4">
+                <div class="info-card">
+                    <!-- КАТЕГОРИЯ -->
+                    <span class="category-badge">
+                        <i class="fas fa-tag"></i> {{ ad.category.name }}
+                    </span>
+
+                    <!-- ТАҚЫРЫП -->
+                    <h1 class="ad-title">{{ ad.title }}</h1>
+
+                    <!-- БАҒА -->
+                    <div class="ad-price">
+                        <i class="fas fa-tag"></i>
+                        {{ ad.price }} ₸
+                    </div>
+
+                    <!-- МӘЛІМЕТТЕР -->
+                    <div class="info-row">
+                        <div class="info-label">
+                            <i class="fas fa-map-marker-alt"></i> Қала:
+                        </div>
+                        <div class="info-value">{{ ad.city.name }}</div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-label">
+                            <i class="fas fa-eye"></i> Көрулер:
+                        </div>
+                        <div class="info-value">{{ ad.views }}</div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-label">
+                            <i class="fas fa-calendar"></i> Жарияланды:
+                        </div>
+                        <div class="info-value">{{ ad.created_at|date:"d.m.Y" }}</div>
+                    </div>
+
+                    <!-- БАЙЛАНЫС -->
+                    <div class="contact-section">
+                        <h3 class="section-title">👤 Байланыс</h3>
+                        <div class="contact-info">
+                            <div class="contact-avatar">
+                                {{ ad.user.username|first|upper }}
+                            </div>
+                            <div>
+                                <div class="contact-name">{{ ad.user.username }}</div>
+                                <small class="text-muted">Қолданушы</small>
+                            </div>
+                        </div>
+
+                        <!-- БАТЫРМАЛАР -->
+                        {% if user == ad.user %}
+                        <div class="action-buttons">
+                            <a href="{% url 'edit_ad' ad.id %}" class="btn btn-edit">
+                                <i class="fas fa-edit"></i> Өзгерту
+                            </a>
+                            <form method="post" action="{% url 'delete_ad' ad.id %}" style="flex: 1;"
+                                  onsubmit="return confirm('Жарнаманы өшіруге сенімдісіз бе?')">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-delete w-100">
+                                    <i class="fas fa-trash"></i> Жою
+                                </button>
+                            </form>
+                        </div>
+                        {% else %}
+                        <a  class="btn btn-contact w-100">
+                            <i class="fas fa-phone"></i> Хабарласу
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
